@@ -2,6 +2,7 @@ from flask import Flask,render_template,request, jsonify
 import pickle
 import numpy as np
 import os
+from flask_cors import CORS
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -17,6 +18,7 @@ books = pickle.load(open(books_path,'rb'))
 similarity_scores = pickle.load(open(similarity_scores_path,'rb'))
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/all', methods=['get'])
 def index():
@@ -45,6 +47,7 @@ def recommend_ui():
     return render_template('recommend.html')
 
 @app.route('/recommend_books',methods=['post'])
+@cross_origin()
 def recommend():
     user_input = request.form.get('user_input')
     print(user_input)
